@@ -1,0 +1,16 @@
+fastapi
+pydantic-settings
+python-dotenv
+SQLAlchemy>=2.0,<3.0
+alembic>=1.13,<2.0
+psycopg[binary]>=3.1,<4.0
+uvicorn
+httpx
+pytest
+resend
+Pillow
+python-multipart
+reportlab
+email-validator
+redis
+fakeredis

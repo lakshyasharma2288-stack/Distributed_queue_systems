@@ -1,0 +1,104 @@
+x-backend-environment: &backend-environment
+  # Use only URI-unreserved characters in POSTGRES_PASSWORD: A-Z, a-z, 0-9, ., _, ~, -
+  DATABASE_URL:  postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+  REDIS_URL: redis://redis:6379/0
+  IMAGE_INPUT_DIR: /app/storage/images/input
+  IMAGE_OUTPUT_DIR: /app/storage/images/output
+  PDF_OUTPUT_DIR: /app/generated_pdfs
+  DEBUG: "false"
+  ENABLE_QUEUE_INSPECTION: ${ENABLE_QUEUE_INSPECTION:-false}
+  RESEND_API_KEY: ${RESEND_API_KEY}
+  RESEND_FROM_EMAIL: onboarding@resend.dev
+
+x-backend-build: &backend-build
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: distributed-queue-system-backend:local
+  init: true
+  restart: unless-stopped
+  environment: *backend-environment
+  volumes:
+    - ./storage:/app/storage
+    - ./generated_pdfs:/app/generated_pdfs
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  api:
+    <<: *backend-build
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  publisher:
+    <<: *backend-build
+    command: ["python", "-m", "app.publisher.run_publisher", "--loop"]
+
+  worker:
+    <<: *backend-build
+    command: ["python", "-m", "app.worker.runner"]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+    image: distributed-queue-system-frontend:local
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+
+volumes:
+  postgres_data:
+  redis_data:

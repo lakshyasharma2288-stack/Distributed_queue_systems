@@ -1,0 +1,143 @@
+{
+  "benchmark": {
+    "completed_jobs": 1000,
+    "end_to_end_throughput_jobs_per_second": 25.64993649482438,
+    "failed_jobs": 0,
+    "verified_pdf_files": 1000
+  },
+  "benchmark_report_paths": [
+    "C:\\Distributed_quue_sysytems\\benchmark-results\\phase3-diagnostics\\week7_20261106T142551809030Z_f4a03f19c14a4fd1a3c4d7fa939c1328.json",
+    "C:\\Distributed_quue_sysytems\\benchmark-results\\phase3-diagnostics\\week7_20261106T142551809030Z_f4a03f19c14a4fd1a3c4d7fa939c1328.md"
+  ],
+  "connection_acquisition_ms": {
+    "average_ms": 0.46459693780646577,
+    "count": 8715,
+    "maximum_ms": 189.55640005879104,
+    "p95_ms": 1.244900049641727
+  },
+  "cpu": {
+    "process_cpu_cores_equivalent": 0.5355453968029978,
+    "process_cpu_seconds": 39.625,
+    "test_call_wall_seconds": 73.98999270005152,
+    "worker_thread_cpu_ms": {
+      "average_ms": 16.640625,
+      "count": 1000,
+      "maximum_ms": 46.875,
+      "p95_ms": 31.25
+    }
+  },
+  "pool": {
+    "acquisition_timing_note": "Pool.connect duration includes pool wait, connection creation if needed, and pool_pre_ping; it is not pure wait.",
+    "configured_pools": [
+      {
+        "checkedout": 0,
+        "database": "distributed_queue_test",
+        "max_overflow": 10,
+        "overflow": -5,
+        "pool_class": "QueuePool",
+        "size": 5,
+        "timeout": 30.0
+      },
+      {
+        "checkedout": 0,
+        "database": "distributed_queue_test",
+        "max_overflow": 10,
+        "overflow": -5,
+        "pool_class": "QueuePool",
+        "size": 5,
+        "timeout": 30.0
+      }
+    ],
+    "max_simultaneously_checked_out": 3
+  },
+  "scope": "Measurements cover the benchmark test call only. SQL text, parameters, credentials, and connection URLs are not recorded.",
+  "sql_client_execution_ms": {
+    "INSERT": {
+      "average_ms": 0.566158479455733,
+      "count": 3001,
+      "maximum_ms": 53.32889989949763,
+      "p95_ms": 1.2085000053048134
+    },
+    "SELECT": {
+      "average_ms": 1.189153481073823,
+      "count": 8710,
+      "maximum_ms": 62.55599996075034,
+      "p95_ms": 6.157099956180899
+    },
+    "UPDATE": {
+      "average_ms": 0.9282929410767535,
+      "count": 6035,
+      "maximum_ms": 54.531600093469024,
+      "p95_ms": 2.7099800761789083
+    }
+  },
+  "timestamp": "2026-11-06T14:27:05.820657+00:00",
+  "transactions_ms": {
+    "commit": {
+      "average_ms": 4.359373556418533,
+      "count": 6036,
+      "maximum_ms": 66.82249996811152,
+      "p95_ms": 10.689825052395463
+    }
+  },
+  "worker": {
+    "benchmark_stages": {
+      "handler_execution_ms": {
+        "average_ms": 5.994106899714097,
+        "count": 1000,
+        "maximum_ms": 64.31580008938909,
+        "minimum_ms": 2.735799876973033,
+        "p50_ms": 4.195899935439229,
+        "p95_ms": 13.493205048143862,
+        "p99_ms": 18.997463064733893
+      },
+      "unclassified_worker_wall_ms": {
+        "average_ms": 8.605823003221303
+      },
+      "worker_claim_ms": {
+        "average_ms": 5.9076877986080945,
+        "count": 1000,
+        "maximum_ms": 64.60990011692047,
+        "minimum_ms": 2.4999999441206455,
+        "p50_ms": 4.610049887560308,
+        "p95_ms": 12.685220094863313,
+        "p99_ms": 19.894643004518
+      },
+      "worker_result_update_ms": {
+        "average_ms": 9.25844680168666,
+        "count": 1000,
+        "maximum_ms": 201.43020013347268,
+        "minimum_ms": 4.097099881619215,
+        "p50_ms": 7.290650042705238,
+        "p95_ms": 16.80520011577755,
+        "p99_ms": 57.79265597229823
+      },
+      "worker_total_ms": {
+        "average_ms": 29.766064503230155,
+        "count": 1000,
+        "maximum_ms": 226.19400010444224,
+        "minimum_ms": 14.86340002156794,
+        "p50_ms": 27.774250018410385,
+        "p95_ms": 43.590734875760965,
+        "p99_ms": 81.36961891315876
+      }
+    },
+    "process_job_wall_ms": {
+      "average_ms": 29.7717360004317,
+      "count": 1000,
+      "maximum_ms": 226.19979991577566,
+      "p95_ms": 43.59845004510134
+    },
+    "thread_cpu_ms": {
+      "average_ms": 16.640625,
+      "count": 1000,
+      "maximum_ms": 46.875,
+      "p95_ms": 31.25
+    }
+  },
+  "workload": {
+    "jobs": 1000,
+    "task_type": "generate_pdf",
+    "workers": 1
+  }
+}

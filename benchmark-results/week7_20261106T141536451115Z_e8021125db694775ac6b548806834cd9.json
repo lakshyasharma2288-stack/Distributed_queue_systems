@@ -1,0 +1,209 @@
+{
+  "limitations": "This benchmark excludes real HTTP socket/server overhead and process startup. Worker-count comparisons use threads on one local machine. Queue wait is measured between Redis enqueue and dequeue calls using the benchmark process monotonic clock. Completion latency is observed through DB polling and includes up to one poll interval of observation delay. PostgreSQL lifecycle fields mark application transitions, not the exact transaction commit time. CPU and memory measurements are unavailable.",
+  "methodology": "API requests use FastAPI TestClient in-process. The outbox publisher function and Redis queue use the real isolated test services. Worker instances run as threads in this Python process and execute the real generate_pdf handler using an identical payload for every job. PDF files are written under a temporary output directory and removed after workers stop. Worker startup is complete before workload timing starts. Same-process durations use time.perf_counter(). Job and attempt lifecycle intervals use only timestamps read from PostgreSQL; no interval combines database timestamps with OutboxEvent.published_at.",
+  "resource_usage": {
+    "cpu": null,
+    "memory": null,
+    "note": "Not sampled by this standard-library-only benchmark."
+  },
+  "results": {
+    "completed_jobs": 100,
+    "end_to_end_duration_seconds": 2.9344540999736637,
+    "end_to_end_throughput_jobs_per_second": 34.07788862701839,
+    "failed_job_ids": [],
+    "failed_jobs": 0,
+    "latencies": {
+      "api_get_ms": {
+        "average_ms": 7.5695700058713555,
+        "count": 100,
+        "maximum_ms": 19.654700066894293,
+        "minimum_ms": 2.742100041359663,
+        "p50_ms": 6.770700099878013,
+        "p95_ms": 14.360199857037513,
+        "p99_ms": 17.0677308458835
+      },
+      "api_submission_duration_ms": {
+        "average_ms": 825.0607999507338,
+        "count": 1,
+        "maximum_ms": 825.0607999507338,
+        "minimum_ms": 825.0607999507338,
+        "p50_ms": 825.0607999507338,
+        "p95_ms": null,
+        "p99_ms": null
+      },
+      "api_submit_ms": {
+        "average_ms": 8.219252007547766,
+        "count": 100,
+        "maximum_ms": 27.41410001181066,
+        "minimum_ms": 5.384699907153845,
+        "p50_ms": 7.5800500344485044,
+        "p95_ms": 12.581179989501832,
+        "p99_ms": 17.27551002986734
+      },
+      "database_attempt_started_to_ended_ms": {
+        "average_ms": 39.87266,
+        "count": 100,
+        "maximum_ms": 60.354,
+        "minimum_ms": 20.48,
+        "p50_ms": 39.637,
+        "p95_ms": 57.05435000000001,
+        "p99_ms": 59.47290000000001
+      },
+      "database_job_created_to_completed_ms": {
+        "average_ms": 1526.71522,
+        "count": 100,
+        "maximum_ms": 2095.9210000000003,
+        "minimum_ms": 843.238,
+        "p50_ms": 1473.1535,
+        "p95_ms": 2050.6884,
+        "p99_ms": 2095.57747
+      },
+      "database_job_created_to_started_ms": {
+        "average_ms": 1486.84256,
+        "count": 100,
+        "maximum_ms": 2061.572,
+        "minimum_ms": 822.758,
+        "p50_ms": 1434.153,
+        "p95_ms": 2008.8619,
+        "p99_ms": 2056.2953
+      },
+      "database_job_started_to_completed_ms": {
+        "average_ms": 39.87266,
+        "count": 100,
+        "maximum_ms": 60.354,
+        "minimum_ms": 20.48,
+        "p50_ms": 39.637,
+        "p95_ms": 57.05435000000001,
+        "p99_ms": 59.47290000000001
+      },
+      "end_to_end_job_ms": {
+        "average_ms": 1598.2603789889254,
+        "count": 100,
+        "maximum_ms": 2123.6263001337647,
+        "minimum_ms": 1277.5069000199437,
+        "p50_ms": 1493.1708499789238,
+        "p95_ms": 2097.051229828503,
+        "p99_ms": 2114.9201408796944
+      },
+      "handler_execution_ms": {
+        "average_ms": 17.641604004893452,
+        "count": 100,
+        "maximum_ms": 30.667399987578392,
+        "minimum_ms": 6.355299847200513,
+        "p50_ms": 17.293650074861944,
+        "p95_ms": 26.91702981246635,
+        "p99_ms": 30.096170017495755
+      },
+      "handler_to_result_update_ms": {
+        "average_ms": 15.865915992762893,
+        "count": 100,
+        "maximum_ms": 29.11809994839132,
+        "minimum_ms": 8.073800010606647,
+        "p50_ms": 14.794350019656122,
+        "p95_ms": 22.705274843610823,
+        "p99_ms": 27.965245044324554
+      },
+      "publisher_duration_ms": {
+        "average_ms": 647.7148002013564,
+        "count": 1,
+        "maximum_ms": 647.7148002013564,
+        "minimum_ms": 647.7148002013564,
+        "p50_ms": 647.7148002013564,
+        "p95_ms": null,
+        "p99_ms": null
+      },
+      "queue_wait_ms": {
+        "average_ms": 868.25805000728,
+        "count": 100,
+        "maximum_ms": 1424.9309999868274,
+        "minimum_ms": 2.1188000682741404,
+        "p50_ms": 919.6952000493184,
+        "p95_ms": 1379.409795103129,
+        "p99_ms": 1414.7456818795763
+      },
+      "redis_dequeue_ms": {
+        "average_ms": 42.73344298824668,
+        "count": 100,
+        "maximum_ms": 1027.2252999711782,
+        "minimum_ms": 0.49310014583170414,
+        "p50_ms": 1.6126999398693442,
+        "p95_ms": 5.649674974847584,
+        "p99_ms": 1026.5262610651553
+      },
+      "redis_empty_pop_ms": {
+        "average_ms": 2.2613520918336385,
+        "count": 240,
+        "maximum_ms": 6.980099948123097,
+        "minimum_ms": 0.2886999864131212,
+        "p50_ms": 1.9208999583497643,
+        "p95_ms": 4.85529004363343,
+        "p99_ms": 6.349498981144274
+      },
+      "redis_enqueue_ms": {
+        "average_ms": 1.083714992273599,
+        "count": 100,
+        "maximum_ms": 4.04009991325438,
+        "minimum_ms": 0.2397000789642334,
+        "p50_ms": 0.63034996856004,
+        "p95_ms": 3.298435197211802,
+        "p99_ms": 3.8535841065458967
+      },
+      "submission_to_redis_enqueue_ms": {
+        "average_ms": 611.4116239827126,
+        "count": 100,
+        "maximum_ms": 801.312199793756,
+        "minimum_ms": 494.11280010826886,
+        "p50_ms": 589.1024000011384,
+        "p95_ms": 788.3596301195212,
+        "p99_ms": 794.6827637939714
+      },
+      "successful_completion_ms": {
+        "average_ms": 1598.2603789889254,
+        "count": 100,
+        "maximum_ms": 2123.6263001337647,
+        "minimum_ms": 1277.5069000199437,
+        "p50_ms": 1493.1708499789238,
+        "p95_ms": 2097.051229828503,
+        "p99_ms": 2114.9201408796944
+      },
+      "worker_claim_ms": {
+        "average_ms": 12.096403005998582,
+        "count": 100,
+        "maximum_ms": 20.84889984689653,
+        "minimum_ms": 5.984100047498941,
+        "p50_ms": 11.755450046621263,
+        "p95_ms": 18.215724953915924,
+        "p99_ms": 19.98264993540943
+      },
+      "worker_result_update_ms": {
+        "average_ms": 15.844841019716114,
+        "count": 100,
+        "maximum_ms": 29.103000182658434,
+        "minimum_ms": 8.0271998886019,
+        "p50_ms": 14.771500136703253,
+        "p95_ms": 22.66699499450624,
+        "p99_ms": 27.942620990797884
+      },
+      "worker_total_ms": {
+        "average_ms": 65.13783100061119,
+        "count": 100,
+        "maximum_ms": 92.88859996013343,
+        "minimum_ms": 36.132399924099445,
+        "p50_ms": 65.0214001070708,
+        "p95_ms": 86.4473450463265,
+        "p99_ms": 92.77019598055631
+      }
+    },
+    "published_jobs": 100,
+    "publisher_throughput_jobs_per_second": 154.3889377993413,
+    "submission_throughput_jobs_per_second": 121.20318891161867,
+    "verified_pdf_files": 100
+  },
+  "timestamp": "2026-11-06T14:15:36.451115+00:00",
+  "timestamp_filename": "20261106T141536451115Z",
+  "workload": {
+    "jobs": 100,
+    "task_type": "generate_pdf",
+    "workers": 4
+  }
+}
